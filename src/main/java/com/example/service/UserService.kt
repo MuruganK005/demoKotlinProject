@@ -34,6 +34,9 @@ class UserService @Autowired constructor(
     }
 
     fun deleteUser(id: Long) {
-        userRepository.deleteById(id)
+        if (userRepository.findById(id).isEmpty()) {
+            throw IllegalArgumentException("User with id $id does not exist")
+        }
+        userRepository.delete(userRepository.findById(id).get())
     }
 }
